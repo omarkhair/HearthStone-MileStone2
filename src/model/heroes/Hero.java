@@ -9,8 +9,9 @@ import model.cards.Card;
 import model.cards.Rarity;
 import model.cards.minions.Icehowl;
 import model.cards.minions.Minion;
+import model.cards.minions.MinionListener;
 
-public abstract class Hero {
+public abstract class Hero implements MinionListener{
 	private String name;
 	private int currentHP;
 	private boolean heroPowerUsed;
@@ -162,5 +163,15 @@ public abstract class Hero {
 
 	public String getName() {
 		return name;
+	}
+	public void onMinionDeath(Minion m) {
+		field.remove(m);
+	}
+	public boolean hasTauntInField() {
+		for (Minion minion : field) {
+			if(minion.isTaunt())
+				return true;
+		}
+		return false;
 	}
 }

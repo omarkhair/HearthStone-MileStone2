@@ -1,8 +1,15 @@
 package engine;
 
-import model.heroes.Hero;
+import exceptions.CannotAttackException;
+import exceptions.InvalidTargetException;
+import exceptions.NotSummonedException;
+import exceptions.NotYourTurnException;
+import exceptions.TauntBypassException;
+import model.cards.minions.*;
+import model.cards.minions.Minion;
+import model.heroes.*;
 
-public class Game  {
+public class Game  implements ActionValidator,HeroListener{
 	private Hero firstHero;
 	private Hero secondHero;
 	private Hero currentHero;
@@ -28,8 +35,48 @@ public class Game  {
 	public Hero getOpponent() {
 		return opponent;
 	}
-
-	
+	public void validateTurn(Hero user) throws NotYourTurnException{
+		if(user!=currentHero) {
+			throw new NotYourTurnException() ;
+		}
+	}
+	public void validateAttack(Minion attacker,Minion target)
+			throws CannotAttackException, NotSummonedException, TauntBypassException,InvalidTargetException
+	{
+		if(attacker.isSleeping()||attacker.isAttacked()||attacker.getAttack()==0) {
+			throw new CannotAttackException();
+		}
+		if(!currentHero.getField().contains(attacker)) {
+			throw new NotSummonedException();
+		}
+		if(opponent.hasTauntInField()) {
+			if(!target.isTaunt()) {
+				throw new TauntBypassException();
+			}
+		}
+		if(currentHero.getField().contains(target)) {
+			throw new InvalidTargetException();
+		}
+	}
+	public void validateAttack(Minion attacker,Hero target) 
+			throws CannotAttackException, NotSummonedException, TauntBypassException,InvalidTargetException
+	{
+		if(attacker.isSleeping()||attacker.isAttacked()||attacker.getAttack()==0) {
+			throw new CannotAttackException();
+		}
+		if(!currentHero.getField().contains(attacker)) {
+			throw new NotSummonedException();
+		}
+		if(opponent.hasTauntInField()) {
+			throw new TauntBypassException();
+		}
+		if(attacker instanceof Icehowl) {
+			throw new InvalidTargetException();
+		}
+		if(target.equals(currentHero)) {
+			throw new InvalidTargetException();
+		}	
+	}
 	
 	
 
