@@ -1,6 +1,8 @@
 package model.cards;
 
-public abstract class Card {
+import exceptions.*;
+
+public abstract class Card implements Cloneable{
 	private String name;
 	private int manaCost;
 	private Rarity rarity;
@@ -34,5 +36,5 @@ public abstract class Card {
 		else if (this.manaCost < 0)
 			this.manaCost = 0;
 	}
-
+	public abstract Card clone() throws CloneNotSupportedException; //try polymorphism after commenting this
 }

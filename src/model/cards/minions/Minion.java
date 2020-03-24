@@ -11,6 +11,11 @@ public class Minion extends Card implements Cloneable {
 	private boolean divine;
 	private boolean sleeping;
 	private boolean attacked;
+	private MinionListener listener;
+
+	public void setListener(MinionListener listener) {
+		this.listener = listener;
+	}
 
 	public Minion(String name, int manaCost, Rarity rarity, int attack, int maxHP, boolean taunt, boolean divine,
 			boolean charge) {
@@ -46,7 +51,7 @@ public class Minion extends Card implements Cloneable {
 			this.currentHP = maxHP;
 		else if (this.currentHP <= 0) {
 			this.currentHP = 0;
-
+			
 		}
 	}
 

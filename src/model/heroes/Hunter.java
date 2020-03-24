@@ -18,6 +18,11 @@ public class Hunter extends Hero {
 	@Override
 	public void buildDeck() throws IOException {
 		ArrayList<Minion> neutrals= getNeutralMinions(getAllNeutralMinions("neutral_minions.csv"),15);
+		//peters opinion
+//		for (Minion minion : neutrals) {
+//			minion.setListener(this);
+//		}
+		
 		getDeck().addAll(neutrals);
 		for(int i = 0 ; i < 2; i++)
 		{
