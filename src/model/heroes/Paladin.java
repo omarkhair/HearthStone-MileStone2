@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import exceptions.FullFieldException;
+import exceptions.FullHandException;
+import exceptions.HeroPowerAlreadyUsedException;
+import exceptions.NotEnoughManaException;
+import exceptions.NotYourTurnException;
 import model.cards.Rarity;
 import model.cards.minions.Minion;
 import model.cards.spells.LevelUp;
@@ -28,6 +33,18 @@ public class Paladin extends Hero {
 	
 		getDeck().add(tirion);
 		Collections.shuffle(getDeck());
+	}
+	public void useHeroPower() throws NotEnoughManaException, HeroPowerAlreadyUsedException, NotYourTurnException,
+	FullHandException, FullFieldException, CloneNotSupportedException {
+		super.useHeroPower();
+		Minion res=new Minion("Silver Hand Recruit", 1, Rarity.BASIC, 1, 1, false, false, false);
+		if(this.getField().size()==7) {
+			throw new FullFieldException();
+		}
+		else {
+			this.getField().add(res);
+		}
+		decrementMana(2);
 	}
 	
 }

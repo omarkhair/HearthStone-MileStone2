@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import exceptions.FullFieldException;
+import exceptions.FullHandException;
+import exceptions.HeroPowerAlreadyUsedException;
+import exceptions.NotEnoughManaException;
+import exceptions.NotYourTurnException;
 import model.cards.Rarity;
 import model.cards.minions.Minion;
 import model.cards.spells.DivineSpirit;
@@ -18,20 +23,34 @@ public class Priest extends Hero {
 
 	@Override
 	public void buildDeck() throws IOException {
-		ArrayList<Minion> neutrals= getNeutralMinions(getAllNeutralMinions("neutral_minions.csv"),13);
+		ArrayList<Minion> neutrals = getNeutralMinions(getAllNeutralMinions("neutral_minions.csv"), 13);
 		getDeck().addAll(neutrals);
-		for(int i = 0 ; i < 2; i++)
-		{
+		for (int i = 0; i < 2; i++) {
 			getDeck().add(new DivineSpirit());
 			getDeck().add(new HolyNova());
 			getDeck().add(new ShadowWordDeath());
 		}
-		Minion velen=new Minion("Prophet Velen", 7, Rarity.LEGENDARY, 7, 7, false, false, false);
-		
+		Minion velen = new Minion("Prophet Velen", 7, Rarity.LEGENDARY, 7, 7, false, false, false);
+
 		getDeck().add(velen);
 		Collections.shuffle(getDeck());
 
 	}
-	
+
+	public void useHeroPower(Hero target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
+			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
+		super.useHeroPower();
+		int curHP = target.getCurrentHP();
+		target.setCurrentHP(curHP +2);
+		decrementMana(2);
+	}
+
+	public void useHeroPower(Minion target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
+			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
+		super.useHeroPower();
+		int curHP = target.getCurrentHP();
+		target.setCurrentHP(curHP +2);
+		decrementMana(2);
+	}
 
 }

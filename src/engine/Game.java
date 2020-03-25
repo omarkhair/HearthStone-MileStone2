@@ -18,15 +18,20 @@ public class Game implements ActionValidator, HeroListener {
 	public Game(Hero p1, Hero p2) {
 		firstHero = p1;
 		secondHero = p2;
-
+		//not sure
+		firstHero.setListener(this);
+		firstHero.setValidator(this);
+		secondHero.setListener(this);
+		secondHero.setValidator(this);
 		int coin = (int) (Math.random() * 2);
 		currentHero = coin == 0 ? firstHero : secondHero;
 		opponent = currentHero == firstHero ? secondHero : firstHero;
 		currentHero.setCurrentManaCrystals(1);
 		currentHero.setTotalManaCrystals(1);
+		
 
 	}
-
+	
 	public Hero getCurrentHero() {
 		return currentHero;
 	}
@@ -108,9 +113,6 @@ public class Game implements ActionValidator, HeroListener {
 	public void damageOpponent(int amount) {
 		int opHP=opponent.getCurrentHP();
 		opponent.setCurrentHP(opHP-amount);
-		if(opponent.getCurrentHP()==0) {
-			onHeroDeath();
-		}
 	}
 	public void endTurn() throws FullHandException, CloneNotSupportedException{
 		switchTurns();

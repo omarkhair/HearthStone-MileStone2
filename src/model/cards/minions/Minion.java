@@ -1,7 +1,10 @@
 package model.cards.minions;
 
-import model.cards.Card;
-import model.cards.Rarity;
+
+
+import exceptions.*;
+import model.cards.*;
+import model.heroes.*;
 
 public class Minion extends Card implements Cloneable {
 	private int attack;
@@ -51,7 +54,7 @@ public class Minion extends Card implements Cloneable {
 			this.currentHP = maxHP;
 		else if (this.currentHP <= 0) {
 			this.currentHP = 0;
-			
+			listener.onMinionDeath(this);
 		}
 	}
 
@@ -92,5 +95,84 @@ public class Minion extends Card implements Cloneable {
 	public boolean isDivine() {
 		return divine;
 	}
+	//.......................................................................
+	public void attack(Minion target) {
+		if(!target.divine) {
+			int curHP=target.getCurrentHP();
+			target.setCurrentHP(curHP-this.getAttack());
+		}
+		else {
+			target.divine=false;
+		}
+		if(!this.divine) {
+			int curHP=this.getCurrentHP();
+			this.setCurrentHP(curHP-target.getAttack());
+		}
+		else {
+			this.divine=false;
+		}
+		
+	}
+	public void attack(Hero target) throws InvalidTargetException{
+		if(this instanceof Icehowl) {
+			throw new InvalidTargetException();
+		}
+		else {
+			int curHP=target.getCurrentHP();
+			target.setCurrentHP(curHP-this.getAttack());
+		}
+	}
+	public Minion clone() throws CloneNotSupportedException{
+		Minion res=new Minion(getName(), getManaCost(), getRarity(), attack, maxHP, taunt, divine, !sleeping);
+		return res;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
