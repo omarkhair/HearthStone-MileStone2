@@ -97,24 +97,27 @@ public class Minion extends Card implements Cloneable {
 	}
 	//.......................................................................
 	public void attack(Minion target) {
+		int amount=this.getAttack();
+		damage(target,amount);
+		amount=target.getAttack();
+		damage(this,amount);
+		
+	}
+	public static void damage(Minion target,int amount) {
 		if(!target.divine) {
 			int curHP=target.getCurrentHP();
-			target.setCurrentHP(curHP-this.getAttack());
+			target.setCurrentHP(curHP-amount);
 		}
 		else {
 			target.divine=false;
 		}
-		if(!this.divine) {
-			int curHP=this.getCurrentHP();
-			this.setCurrentHP(curHP-target.getAttack());
-		}
-		else {
-			this.divine=false;
-		}
-		
+	}
+	public static void heal(Minion target,int amount) {
+		int cur=target.getCurrentHP();
+		target.setCurrentHP(cur+amount);
 	}
 	public void attack(Hero target) throws InvalidTargetException{
-		if(this instanceof Icehowl) {
+		if( this.getName().equals("Icehowl")) {
 			throw new InvalidTargetException();
 		}
 		else {

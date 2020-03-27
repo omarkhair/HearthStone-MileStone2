@@ -239,50 +239,32 @@ public abstract class Hero implements MinionListener {
 		attacker.attack(target);
 	}
 	public void castSpell(FieldSpell s) throws NotYourTurnException,NotEnoughManaException{
-		validator.validateTurn(this);
-		//typecasting????
-		validator.validateManaCost((Spell)s);
+		this.SpellCaster((Spell)s);
 		s.performAction(getField());
-		int manaCost=((Spell)s).getManaCost();
-		decrementMana(manaCost);
-		getHand().remove(s);
+		
 	}
 	public void castSpell(AOESpell s, ArrayList<Minion >oppField) throws NotYourTurnException, NotEnoughManaException{
-		validator.validateTurn(this);
-		//typecasting????
-		validator.validateManaCost((Spell)s);
+		this.SpellCaster((Spell)s);
 		s.performAction(oppField, getField());
-		int manaCost=((Spell)s).getManaCost();
-		decrementMana(manaCost);
-		getHand().remove(s);
+		
 	}
 	public void castSpell(MinionTargetSpell s, Minion m) throws NotYourTurnException,NotEnoughManaException,
 		 InvalidTargetException{
-		validator.validateTurn(this);
-		//typecasting????
-		validator.validateManaCost((Spell)s);
+		this.SpellCaster((Spell)s);
 		s.performAction(m);
-		int manaCost=((Spell)s).getManaCost();
-		decrementMana(manaCost);
-		getHand().remove(s);
+		
 	}
 	public void castSpell(HeroTargetSpell s, Hero h) throws NotYourTurnException,NotEnoughManaException{
-		validator.validateTurn(this);
-		//typecasting????
-		validator.validateManaCost((Spell)s);
+		this.SpellCaster((Spell)s);
 		s.performAction(h);
-		int manaCost=((Spell)s).getManaCost();
-		decrementMana(manaCost);
-		getHand().remove(s);
+		
 	}
 	public void castSpell(LeechingSpell s, Minion m) throws NotYourTurnException,NotEnoughManaException{
-		validator.validateTurn(this);
-		//typecasting????
-		validator.validateManaCost((Spell)s);
-		s.performAction(m);
-		int manaCost=((Spell)s).getManaCost();
-		decrementMana(manaCost);
-		getHand().remove(s);
+		this.SpellCaster((Spell)s);
+		int amount = s.performAction(m);
+		int cur=this.getCurrentHP();
+		this.setCurrentHP(cur+amount);
+		
 	}
 	public void endTurn() throws FullHandException, CloneNotSupportedException{
 		listener.endTurn();
@@ -293,20 +275,74 @@ public abstract class Hero implements MinionListener {
 			return null;
 		}else {
 			Card c=deck.remove(0);
+			
 			if(hand.size()==10) {
 				throw new FullHandException(c);
 			}
+			hasChromaggus(c);
 			hand.add(c);
 			return c;
 		}
 	}
+	
 	private void deliverFatigue() {
-		int curHP=this.getCurrentHP();
-		this.setCurrentHP(curHP-(fatigueDamage++));
+		damage(this,fatigueDamage++);
 	}
 	protected void decrementMana(int amount) {
 		int currentMana=getCurrentManaCrystals();
 		setCurrentManaCrystals(currentMana-amount);
+	}
+	public static void damage(Hero h,int amount) {
+		int curHP=h.getCurrentHP();
+		h.setCurrentHP(curHP-amount);
+	}
+	public void SpellCaster(Spell s) throws NotYourTurnException, NotEnoughManaException {
+		validator.validateTurn(this);
+		validator.validateManaCost(s);
+		int manaCost=s.getManaCost();
+		manaCost-=hasKalycgos(s);
+		manaCost=Math.max(manaCost, 0);
+		decrementMana(manaCost);
+		getHand().remove(s);
+	}
+	private void hasChromaggus(Card c) throws CloneNotSupportedException {
+		ArrayList<Minion> f=this.field;
+		for (Minion minion : f) {
+			if(minion.getName().equals("Chromaggus")) {
+				//should we throw full hand exception??
+				if(this.hand.size()<10) {
+					Card c2=c.clone();
+					if(hasWilfred_Fizzlebang()) {
+						c2.setManaCost(0);
+					}
+					hand.add(c2);
+				}
+			}
+		}
+	}
+	private int hasKalycgos(Spell s) {
+		int amount=0;
+		if(this instanceof Mage) {
+			ArrayList<Minion> f=this.field;
+			for (Minion minion : f) {
+				if(minion.getName().equals("Kalycgos")) {
+					amount+=4;
+				}
+			}
+		}
+		return amount;
+	}
+	public boolean hasWilfred_Fizzlebang() {
+		if (this instanceof Warlock) {
+			ArrayList<Minion> f = this.getField();
+			for (Minion minion : f) {
+				if (minion.getName().equals("Wilfred Fizzlebang")) {
+					return true;
+				}
+			}
+			
+		}
+		return false;
 	}
 
 }

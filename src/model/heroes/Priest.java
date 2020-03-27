@@ -9,6 +9,7 @@ import exceptions.FullHandException;
 import exceptions.HeroPowerAlreadyUsedException;
 import exceptions.NotEnoughManaException;
 import exceptions.NotYourTurnException;
+import model.cards.Card;
 import model.cards.Rarity;
 import model.cards.minions.Minion;
 import model.cards.spells.DivineSpirit;
@@ -41,16 +42,37 @@ public class Priest extends Hero {
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
 		super.useHeroPower();
 		int curHP = target.getCurrentHP();
-		target.setCurrentHP(curHP +2);
+		int amount;
+		if (hasProphet_Velen())
+			amount = 8;
+		else
+			amount = 2;
+		target.setCurrentHP(curHP + amount);
 		decrementMana(2);
 	}
+
+	
 
 	public void useHeroPower(Minion target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
 		super.useHeroPower();
 		int curHP = target.getCurrentHP();
-		target.setCurrentHP(curHP +2);
+		int amount;
+		if (hasProphet_Velen())
+			amount = 8;
+		else
+			amount = 2;
+		target.setCurrentHP(curHP + amount);
 		decrementMana(2);
+	}
+	private boolean hasProphet_Velen() {
+		ArrayList<Minion> f = this.getField();
+		for (Minion minion : f) {
+			if (minion.getName().equals("Prophet Velen")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
