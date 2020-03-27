@@ -14,14 +14,14 @@ public class Polymorph extends Spell implements MinionTargetSpell {
 	//invalid target issue
 	//special effect problem
 	public void performAction(Minion m) throws InvalidTargetException {
-//		m.setAttack(1);
-//		m.setCurrentHP(1);
-//		m.setMaxHP(1);
-//		m.setName("Sheep");
-//		m.setDivine(false);
-//		m.setTaunt(false);
-//		m.setSleeping(true);
-//		m.setManaCost(1);
+		m.setAttack(1);
+		m.setCurrentHP(1);
+		m.setMaxHP(1);
+		m.setName("Sheep");
+		m.setDivine(false);
+		m.setTaunt(false);
+		m.setSleeping(true);
+		m.setManaCost(1);
 		
 	}
 

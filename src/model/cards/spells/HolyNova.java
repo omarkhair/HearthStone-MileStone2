@@ -14,8 +14,14 @@ public class HolyNova extends Spell implements AOESpell {
 
 	@Override
 	public void performAction(ArrayList<Minion> oppField, ArrayList<Minion> curField) {
-		for (Minion minion : oppField) {
-			Minion.damage(minion,2);
+		int size=oppField.size();
+		for (int i = 0; i < oppField.size(); i++) {
+			Minion m=oppField.get(i);
+			Minion.damage(m, 2);
+			if(oppField.size()!=size) {
+				i--;
+				size--;
+			}
 		}
 		for (Minion minion : curField) {
 			Minion.heal(minion,2);

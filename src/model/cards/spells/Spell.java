@@ -8,5 +8,5 @@ public abstract class Spell extends Card{
 	public Spell(String n, int m ,Rarity r) {
 super(n,m,r);
 	}
-	public abstract Spell clone() throws CloneNotSupportedException;
+	public  abstract Spell clone() throws CloneNotSupportedException;
 }

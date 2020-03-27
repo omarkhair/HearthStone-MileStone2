@@ -196,6 +196,7 @@ public abstract class Hero implements MinionListener {
 
 	public void useHeroPower() throws NotEnoughManaException, HeroPowerAlreadyUsedException, NotYourTurnException,
 			FullHandException, FullFieldException, CloneNotSupportedException {
+		//decrement mana cost leh ya3am
 		validator.validateUsingHeroPower(this);
 		validator.validateTurn(this);
 
@@ -302,6 +303,7 @@ public abstract class Hero implements MinionListener {
 		int manaCost=s.getManaCost();
 		manaCost-=hasKalycgos(s);
 		manaCost=Math.max(manaCost, 0);
+		s.setManaCost(manaCost);
 		decrementMana(manaCost);
 		getHand().remove(s);
 	}
@@ -312,8 +314,10 @@ public abstract class Hero implements MinionListener {
 				//should we throw full hand exception??
 				if(this.hand.size()<10) {
 					Card c2=c.clone();
+					System.out.println(c2);
 					if(hasWilfred_Fizzlebang()) {
 						c2.setManaCost(0);
+						
 					}
 					hand.add(c2);
 				}

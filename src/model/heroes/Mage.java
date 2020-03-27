@@ -40,16 +40,14 @@ public class Mage extends Hero {
 	public void useHeroPower(Hero target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
 		super.useHeroPower();
-		int curHP=target.getCurrentHP();
-		target.setCurrentHP(curHP-1);
+		Hero.damage(target,1);
 		decrementMana(2);
 	}
 
 	public void useHeroPower(Minion target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
 		super.useHeroPower();
-		int curHP=target.getCurrentHP();
-		target.setCurrentHP(curHP-1);
+		Minion.damage(target,1);
 		decrementMana(2);
 	}
 

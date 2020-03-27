@@ -28,7 +28,17 @@ public class Game implements ActionValidator, HeroListener {
 		opponent = currentHero == firstHero ? secondHero : firstHero;
 		currentHero.setCurrentManaCrystals(1);
 		currentHero.setTotalManaCrystals(1);
-		
+		//0 mana card
+		for (int i = 0; i < 3; i++) {
+			try {
+				currentHero.drawCard();
+			} catch (Exception e) {}
+		}
+		for (int i = 0; i < 4; i++) {
+			try {
+				opponent.drawCard();
+			} catch (Exception e) {}
+		}
 
 	}
 	
@@ -54,7 +64,10 @@ public class Game implements ActionValidator, HeroListener {
 		if (attacker.isSleeping() || attacker.isAttacked() || attacker.getAttack() == 0) {
 			throw new CannotAttackException();
 		}
-		if (!currentHero.getField().contains(attacker)) {
+		if (currentHero.getField().contains(target)) {
+			throw new InvalidTargetException();
+		}
+		if (!currentHero.getField().contains(attacker)||!opponent.getField().contains(target)) {
 			throw new NotSummonedException();
 		}
 		if (opponent.hasTauntInField()) {
@@ -62,9 +75,7 @@ public class Game implements ActionValidator, HeroListener {
 				throw new TauntBypassException();
 			}
 		}
-		if (currentHero.getField().contains(target)) {
-			throw new InvalidTargetException();
-		}
+		
 	}
 
 	public void validateAttack(Minion attacker, Hero target)
