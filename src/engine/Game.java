@@ -3,7 +3,6 @@ import java.util.*;
 import exceptions.*;
 import model.cards.*;
 import model.cards.minions.*;
-import model.cards.minions.Minion;
 import model.heroes.*;
 
 public class Game implements ActionValidator, HeroListener {

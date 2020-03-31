@@ -1,3 +1,4 @@
+
 package model.heroes;
 
 import java.io.IOException;
@@ -10,12 +11,12 @@ import model.cards.spells.*;
 
 public class Warlock extends Hero {
 
-	public Warlock() throws IOException {
+	public Warlock() throws IOException, CloneNotSupportedException {
 		super("Gul'dan");
 	}
 
 	@Override
-	public void buildDeck() throws IOException {
+	public void buildDeck() throws IOException, CloneNotSupportedException {
 		ArrayList<Minion> neutrals = getNeutralMinions(getAllNeutralMinions("neutral_minions.csv"), 13);
 		getDeck().addAll(neutrals);
 		for (int i = 0; i < 2; i++) {
@@ -36,9 +37,8 @@ public class Warlock extends Hero {
 		if (c instanceof Minion && hasWilfred_Fizzlebang()) {
 			c.setManaCost(0);
 		}
-		int curHP = this.getCurrentHP();
-		this.setCurrentHP(curHP - 2);
-		decrementMana(2);
+		damage(this, 2);
+		//decrementMana(2);
 	}
 
 	

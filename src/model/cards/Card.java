@@ -1,6 +1,6 @@
 package model.cards;
 
-import exceptions.*;
+
 
 public abstract class Card implements Cloneable{
 	private String name;

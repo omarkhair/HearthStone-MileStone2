@@ -24,7 +24,7 @@ public abstract class Hero implements MinionListener {
 
 	
 
-	public Hero(String name) throws IOException {
+	public Hero(String name) throws IOException, CloneNotSupportedException {
 		this.name = name;
 		currentHP = 30;
 		deck = new ArrayList<Card>();
@@ -50,7 +50,7 @@ public abstract class Hero implements MinionListener {
 		this.listener = listener;
 	}
 
-	public abstract void buildDeck() throws IOException;
+	public abstract void buildDeck() throws IOException,CloneNotSupportedException;
 
 	public static final ArrayList<Minion> getAllNeutralMinions(String filePath) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -95,7 +95,7 @@ public abstract class Hero implements MinionListener {
 		return minions;
 	}
 
-	public static final ArrayList<Minion> getNeutralMinions(ArrayList<Minion> minions, int count) {
+	public static final ArrayList<Minion> getNeutralMinions(ArrayList<Minion> minions, int count) throws CloneNotSupportedException {
 		ArrayList<Minion> res = new ArrayList<Minion>();
 		int i = 0;
 		while (i < count) {
@@ -107,7 +107,7 @@ public abstract class Hero implements MinionListener {
 				if (res.get(j).getName().equals(minion.getName()))
 					occ++;
 			}
-			try {
+			
 				if (occ == 0) {
 					res.add(minion.clone());
 					i++;
@@ -115,9 +115,7 @@ public abstract class Hero implements MinionListener {
 					res.add(minion.clone());
 					i++;
 				}
-			} catch (CloneNotSupportedException e) {
-
-			}
+			
 
 		}
 		return res;
@@ -193,29 +191,27 @@ public abstract class Hero implements MinionListener {
 		}
 		return false;
 	}
-
+	
 	public void useHeroPower() throws NotEnoughManaException, HeroPowerAlreadyUsedException, NotYourTurnException,
 			FullHandException, FullFieldException, CloneNotSupportedException {
-		//decrement mana cost leh ya3am
 		validator.validateUsingHeroPower(this);
 		validator.validateTurn(this);
+		//lazem nes2al feha
+		decrementMana(2);
+		setHeroPowerUsed(true);
 
 	}
+	
 
 	public void useHeroPower(Hero target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
-//		useHeroPower();
-//		validator.validateUsingHeroPower(this);
-//		validator.validateTurn(this);
-		// empty
+		useHeroPower();
 	}
+	
 
 	public void useHeroPower(Minion target) throws NotEnoughManaException, HeroPowerAlreadyUsedException,
 			NotYourTurnException, FullHandException, FullFieldException, CloneNotSupportedException {
-//		useHeroPower();
-//		validator.validateUsingHeroPower(this);
-//		validator.validateTurn(this);
-		// empty
+		useHeroPower();
 	}
 
 	public void playMinion(Minion m) throws NotYourTurnException, NotEnoughManaException, FullFieldException {
@@ -312,10 +308,10 @@ public abstract class Hero implements MinionListener {
 		for (Minion minion : f) {
 			if(minion.getName().equals("Chromaggus")) {
 				//should we throw full hand exception??
-				if(this.hand.size()<10) {
+				if(this.hand.size()<9) {
 					Card c2=c.clone();
-					System.out.println(c2);
-					if(hasWilfred_Fizzlebang()) {
+					//System.out.println(c2);
+					if(c2 instanceof Minion && hasWilfred_Fizzlebang()) {
 						c2.setManaCost(0);
 						
 					}

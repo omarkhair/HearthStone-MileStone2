@@ -16,6 +16,7 @@ public class Minion extends Card implements Cloneable {
 	private boolean attacked;
 	private MinionListener listener;
 
+
 	public void setListener(MinionListener listener) {
 		this.listener = listener;
 	}
@@ -128,9 +129,25 @@ public class Minion extends Card implements Cloneable {
 		}
 	}
 	public Minion clone() throws CloneNotSupportedException{
-		Minion res=new Minion(getName(), getManaCost(), getRarity(), attack, maxHP, taunt, divine, !sleeping);
-		return res;
+		//Minion res=new Minion(getName(), getManaCost(), getRarity(), attack, maxHP, taunt, divine, !sleeping);
+		return (Minion)super.clone();
 	}
+	public String toString() {
+		return getName()+" "+getManaCost();
+	}
+//	public static void main(String[] args) throws CloneNotSupportedException {
+//		Minion m=new Minion("kayzar", 3, Rarity.LEGENDARY, 0, 5, false, false, false);
+//		m.klbz=new Minion("3esh3e5", 4, null, 1, 5, false, false,false);
+//		Minion m2=m.clone();
+//		System.out.println(m);
+//		System.out.println(m2);
+//		m.setName("omar");
+//		System.out.println(m);
+//		System.out.println(m2.klbz);
+//		m2.klbz.setName("paytration");
+//		System.out.println(m.klbz);
+//		Card c=new Card("peter",2,Rarity.BASIC);
+//	}
 	
 	
 	
