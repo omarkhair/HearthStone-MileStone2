@@ -36,5 +36,8 @@ public abstract class Card implements Cloneable{
 		else if (this.manaCost < 0)
 			this.manaCost = 0;
 	}
-	public abstract Card clone() throws CloneNotSupportedException; //try polymorphism after commenting this
+	public  Card clone() throws CloneNotSupportedException{
+		//try polymorphism after commenting this
+		return (Card) super.clone();
+	}
 }
